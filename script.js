@@ -1,4 +1,4 @@
-// Assignment Code
+// this is the generate password button
 let generateBtn = document.querySelector("#generate");
 
 let allChars = {
@@ -7,12 +7,12 @@ let allChars = {
   numbers: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
   specialChars: [" ", "!", "\"", "#", "$", "%", "&", "\'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"]
 }
-
+// gets filled after we test our password for passing all criteria 
 let passString = "";
-
+// generates random password string
 function generatePassword(length, isLower, isUpper, isNumber, isSpecial) {
 
-  // this is combining all the requested characters used in the password into one array
+  //combines all the requested characters used in the password into one array
   let totalContent = [];
 
   if (isLower) {
@@ -38,8 +38,8 @@ function generatePassword(length, isLower, isUpper, isNumber, isSpecial) {
 
   let passCriteria = [isLower, isUpper, isNumber, isSpecial];
   let criteriaCheck = passCriteria.includes(true);
-
-  if (criteriaCheck === true && length > 7 && length < 121) {
+  // tests password minimum requirements
+  if (criteriaCheck === true && length > 7 && length < 129) {
 
     let finalPass = [];
 
@@ -47,15 +47,15 @@ function generatePassword(length, isLower, isUpper, isNumber, isSpecial) {
       let randomChar = totalContent[Math.floor(Math.random() * totalContent.length)];
       finalPass.push(randomChar);
     }
+    // calls test function on the generated password
     let hasChars = characterTest(finalPass.join(""), isLower, isUpper, isNumber, isSpecial);
-    if(hasChars===true){
-      console.log(finalPass+" finalPass");
-      console.log(finalPass.join("")+ " finalPass join")
-      passString=finalPass.join("");
+    //returns generated password if test passes and ends function
+    if (hasChars === true) {
+      passString = finalPass.join("");
       return;
     }
-    else{
-    generatePassword(length,isLower,isUpper,isNumber,isSpecial);
+    else {
+      generatePassword(length, isLower, isUpper, isNumber, isSpecial);
     }
   }
 
@@ -64,8 +64,9 @@ function generatePassword(length, isLower, isUpper, isNumber, isSpecial) {
     main();
   }
 }
-
+// test for generated password
 function characterTest(password, isLower, isUpper, isNumber, isSpecial) {
+  // counts how many types of criteria is used in the password
   let chars = 0;
   if (isLower) {
     chars++;
@@ -84,7 +85,7 @@ function characterTest(password, isLower, isUpper, isNumber, isSpecial) {
   let numberChecked = 0;
   let specialChecked = 0;
   let checkedChars = 0;
-
+// adds types of criteria found in the password
   for (let i = 0; i < password.length; i++) {
     if (allChars.lowerLetters.join("").includes(password[i]) && lowerChecked === 0) {
       lowerChecked++;
@@ -103,15 +104,7 @@ function characterTest(password, isLower, isUpper, isNumber, isSpecial) {
       checkedChars++;
     }
   }
-
-  console.log(password + " password string")
-  console.log(chars + " chars");
-  console.log(checkedChars +" checked chars");
-  console.log(lowerChecked + " lowerChecked");
-  console.log(upperChecked + " upperChecked");
-  console.log(numberChecked + " numberchecked");
-  console.log(specialChecked + " specialChecked");
-
+// tests if the amount of types of criteria used in the password equals how many types of criteria was requested
   if (chars === checkedChars) {
     return true;
   }
@@ -124,8 +117,6 @@ function writePassword(password) {
   let passwordText = document.querySelector("#password");
   passwordText.value = password;
 }
-
-
 
 function main() {
   // series of prompts getting info for the password
@@ -140,6 +131,5 @@ function main() {
   generatePassword(passLength, passLower, passUpper, passNumeric, passSpecial);
   writePassword(passString);
 }
-
 
 generateBtn.addEventListener("click", main);
